@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Cadastro de Alunos</title>
+</head>
+<body>
+  <h1>Cadastro de Alunos</h1>
+  <a href="/highschool/index.php?controller=aluno&action=editar">Incluir
+    aluno</a>
+  <table>
+    <thead>
+      <tr>
+        <th>Matrícula</th>
+        <th>Nome</th>
+        <th>Data de Nascimento</th>
+        <th>Turma</th>        
+      </tr>
+    </thead>
+    <tbody>
+      <?php
+      foreach($this->alunos as $aluno)
+      {
+        ?>
+      <tr>
+        <td><?=$aluno->getMatricula()?></td>
+        <td><?=$aluno->getNome()?></td>
+        <td><?=$aluno->getDataDeNascimento()?></td>
+        <td><?=$aluno->getTurma()->getNome()?></td>
+        <td><a
+          href="/highschool/index.php?controller=aluno&action=editar&id=<?=$aluno->getId()?>">Editar</a>
+        </td>        
+        <td><a
+          href="/highschool/index.php?controller=aluno&action=excluir&id=<?=$aluno->getId()?>">Excluir</a>
+        </td>        
+      </tr>
+      <?php  
+      }
+      ?>
+    </tbody>
+  </table>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Cadastro de Turmas</title>
+</head>
+<body>
+  <h1>Cadastro de Turmas</h1>
+  <a href="/highschool/index.php?controller=turma&action=editar">Incluir
+    turma</a>
+  <table>
+    <thead>
+      <tr>
+        <th>Nome</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php
+      foreach($this->turmas as $turma)
+      {
+        ?>
+      <tr>
+        <td><?=$turma->getNome()?></td>
+        <td><a
+          href="/highschool/index.php?controller=turma&action=editar&id=<?=$turma->getId()?>">Editar</a>
+        </td>        
+        <td><a
+          href="/highschool/index.php?controller=turma&action=excluir&id=<?=$turma->getId()?>">Excluir</a>
+        </td>
+      </tr>
+      <?php  
+      }
+      ?>
+    </tbody>
+  </table>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Edição de professor</title>
+</head>
+<body>
+  <form action="/highschool/index.php?controller=professor&action=gravar" method="post">
+    Matrícula:
+    <input type="text" name="matricula" value="<?=$this->professor->getMatricula()?>"><br>
+    
+    Nome:
+    <input type="text" name="nome" value="<?=$this->professor->getNome()?>"><br>
+    
+    Turmas:<br>
+    <select name="turmas[]" multiple="multiple">
+      <?=$this->optionsTurma?>
+    </select><br>
+    
+    <input type="hidden" name="id" value="<?=$this->professor->getId()?>"><br>
+    <input type="submit" value="gravar">
+  </form>
+</body>
+</html>

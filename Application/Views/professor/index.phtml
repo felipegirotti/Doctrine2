@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Cadastro de Professores</title>
+</head>
+<body>
+  <h1>Cadastro de Professores</h1>
+  <a href="/highschool/index.php?controller=professor&action=editar">Incluir
+    professor</a>
+  <table>
+    <thead>
+      <tr>
+        <th>Nome</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php
+      foreach($this->professores as $professor)
+      {
+        ?>
+      <tr>
+        <td><?=$professor->getNome()?></td>
+        <td>
+          <a href="/highschool/index.php?controller=professor&action=editar&id=<?=$professor->getId()?>">Editar</a>
+        </td>        
+        <td>
+          <a href="/highschool/index.php?controller=professor&action=excluir&id=<?=$professor->getId()?>">Excluir</a>
+        </td>
+        <td>
+        <form action="/highschool/index.php?controller=professor&action=excluirTurma" method="post">
+          <select name="turma">
+            <?=$this->getOptionsTurma($professor)?>
+          </select>
+          <input type="hidden" name="professor" value="<?=$professor->getId()?>">
+          <input type="submit" value="excluir turma">
+        </form>
+        </td>        
+      </tr>
+      <?php  
+      }
+      ?>
+    </tbody>
+  </table>
+</body>
+</html>
