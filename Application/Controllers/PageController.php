@@ -10,7 +10,16 @@ namespace Application\Controllers;
 abstract class PageController
 {
   protected $viewAttributes = array();
+  protected $model;
   
+  public function __construct() 
+  {
+      if (!empty($this->model)) {
+          $this->model = new $this->model($GLOBALS['em']);
+      }
+  }
+
+
   public function __set($name, $value)
   {
     $this->viewAttributes[$name] = $value;

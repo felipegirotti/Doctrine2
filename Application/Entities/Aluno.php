@@ -7,7 +7,7 @@ use \Application\Entities\HistoricoEscolar as Historico;
 use \Application\Entities\Turma as Turma;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Application\Repositories\Aluno")
  * @ORM\Table(name="alunos")
  * 
  */

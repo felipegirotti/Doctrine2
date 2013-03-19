@@ -11,45 +11,34 @@ use \Application\Entities\Turma as Turma;
  */
 class TurmaController extends PageController
 {
+    /**
+     *
+     * @var Application\Models\Turma
+     */
+    protected $model = 'Application\Models\Turma';
     public function indexAction()
-    {
-      $em = $GLOBALS['em'];
-      $query = $em->createQuery("select a from Application\Entities\Turma a");
-      $this->turmas = $query->getResult();    
+    {            
+      $this->turmas = $this->model->getRepository()
+                                ->getAll();    
     }
 
     public function editarAction()
     {
       $id = (int) isset($_GET['id']) ? $_GET['id'] : 0;
 
-      $em = $GLOBALS['em'];
-
-      $turma = $em->find('Application\\Entities\\Turma',$id);
-
-      $turma = empty($turma) ? new Turma() : $turma;
-
-      $this->turma = $turma;     
+      $this->turma = $this->model->getRepository()->findOrNew($id);     
     }
 
   
     public function gravarAction()
     {
-      $id = isset($_POST['id']) ? $_POST['id'] : 0;
-      $nome = $_POST['nome'];
-
-      $em = $GLOBALS['em'];
-
-      $turma = $em->find('Application\\Entities\\Turma',$id);
-
-      $turma = empty($turma) ? new Turma() : $turma;
-      $turma->setNome($nome);    
-
-      $em->persist($turma);
+     
 
       $mensagem = 'Turma gravada com sucesso!';
       try 
       {
-        $em->flush();
+        $this->model->getRepository()
+                    ->save($_POST);
       }
       catch(Exception $e)
       {
@@ -61,18 +50,13 @@ class TurmaController extends PageController
   
     public function excluirAction()
     {
-      $id = (int) $_GET['id'];
-
-      $em = $GLOBALS['em'];
-
-      $turma = $em->find('Application\\Entities\\Turma',$id);
-
-      $em->remove($turma);
+      $id = (int) $_GET['id'];     
 
       $mensagem = 'Turma excluída com sucesso!';
       try
       {
-        $em->flush();
+          $this->model->getRepository()
+                        ->delete($id);
       }
       catch (Exception $e)
       {

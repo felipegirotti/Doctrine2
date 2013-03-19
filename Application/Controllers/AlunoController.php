@@ -14,67 +14,31 @@ use \Application\Entities\Aluno as Aluno,
  */
 class AlunoController extends PageController
 {
+    
+    protected $model = 'Application\Models\Aluno';
+    
     public function indexAction()
-    {
-        $em = $GLOBALS['em'];
-        $query = $em->createQuery("select a from Application\Entities\Aluno a");
-        $this->alunos = $query->getResult(); 
+    {               
+        $this->alunos = $this->model->getRepository()->getAll(); 
     }
 
     public function editarAction()
     {
       $id = (int) isset($_GET['id']) ? $_GET['id'] : 0;
 
-      $em = $GLOBALS['em'];
+      $this->aluno = $this->model->getRepository()
+                        ->findOrNew($id);
 
-      $aluno = $em->find('Application\\Entities\\Aluno',$id);
-
-      $aluno = empty($aluno) ? new Aluno() : $aluno;
-
-      $this->aluno = $aluno;
-
-      $this->optionsTurma = $this->getOptionsTurma($aluno);
+      $this->optionsTurma = $this->getOptionsTurma($this->aluno);
     }
 
   
     public function gravarAction()
-    {
-      $id = (int) $_POST['id'];
-      $matricula = $_POST['matricula'];
-      $nome = $_POST['nome'];
-      $dataDeNascimento = $_POST['data_de_nascimento'];
-      $idTurma = (int) $_POST['turma'];
-
-      $em = $GLOBALS['em'];
-
-      $aluno = $em->find('Application\Entities\Aluno',$id);
-
-      if (empty($aluno))
-      {
-        $aluno = new Aluno();
-      }
-      $aluno->setMatricula($matricula);
-      $aluno->setNome($nome);
-      $aluno->setDataDeNascimento($dataDeNascimento);
-
-      $turma = $em->find('Application\Entities\Turma',$idTurma);
-
-      $aluno->setTurma($turma);
-
-      if (empty($id))
-      {
-        $historico = new HistoricoEscolar();
-        $historico->setObservacoes('');
-        $em->persist($historico);
-        $aluno->setHistorico($historico);
-      }
-
-      $em->persist($aluno);
-
+    {     
       $mensagem = 'Aluno gravado com sucesso!';
       try 
       {
-        $em->flush();      
+        $this->model->getRepository()->save($_POST);    
       }
       catch(Exception $e)
       {
@@ -87,16 +51,11 @@ class AlunoController extends PageController
     {
       $id = (int) $_GET['id'];
 
-      $em = $GLOBALS['em'];
-
-      $aluno = $em->find('Application\\Entities\\Aluno',$id);
-
-      $em->remove($aluno);
-
       $mensagem = 'Aluno excluído com sucesso!';
       try
       {
-        $em->flush();
+        $this->model->getRepository()
+                ->delete($id);
       }
       catch (Exception $e)
       {
